@@ -124,7 +124,7 @@ public class ContactosCovid {
 						throw new EmsInvalidTypeException();
 					}
 					comprobarDatosPersona(datos);
-					comprobarNumDatosLocalizacion(datos);
+					comprobarDatosLocalizacion(datos);
 				}
 
 			}
@@ -146,10 +146,7 @@ public class ContactosCovid {
 	}
 	private void comprobarDatosPersona(String[] datos) throws EmsInvalidNumberOfDataException,
 			EmsDuplicatePersonException {
-		if (datos[0].equals("PERSONA")) {
-			comprobarNumDatosPersona(datos);
-			this.poblacion.addPersona(this.crearPersona(datos));
-		}
+
 	}
 	private void comprobarNumDatosPersona(String[] datos) throws EmsInvalidNumberOfDataException {
 		if (datos.length != Constantes.MAX_DATOS_PERSONA) {
