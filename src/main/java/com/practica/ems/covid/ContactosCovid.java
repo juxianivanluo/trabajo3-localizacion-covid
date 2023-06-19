@@ -118,14 +118,7 @@ public class ContactosCovid {
 			 */
 			while ((data = br.readLine()) != null) {
 				datas = dividirEntrada(data.trim());
-				for (String linea : datas) {
-					String datos[] = this.dividirLineaData(linea);
-					if (!datos[0].equals("PERSONA") && !datos[0].equals("LOCALIZACION")) {
-						throw new EmsInvalidTypeException();
-					}
-					comprobarDatosPersona(datos);
-					comprobarDatosLocalizacion(datos);
-				}
+				anadirDatos(datas);
 
 			}
 
@@ -144,7 +137,18 @@ public class ContactosCovid {
 			}
 		}
 	}
-	private void comprobarDatosPersona(String[] datos) throws EmsInvalidNumberOfDataException,
+	private void anadirDatos(String[] datas) throws EmsInvalidTypeException,
+			EmsInvalidNumberOfDataException, EmsDuplicatePersonException, EmsDuplicateLocationException {
+		for (String linea : datas) {
+			String datos[] = this.dividirLineaData(linea);
+			if (!datos[0].equals("PERSONA") && !datos[0].equals("LOCALIZACION")) {
+				throw new EmsInvalidTypeException();
+			}
+			anadirDatosPersona(datos);
+			anadirDatosLocalizacion(datos);
+		}
+	}
+	private void anadirDatosPersona(String[] datos) throws EmsInvalidNumberOfDataException,
 			EmsDuplicatePersonException {
 		if (datos[0].equals("PERSONA")) {
 			comprobarNumDatosPersona(datos);
@@ -156,7 +160,7 @@ public class ContactosCovid {
 			throw new EmsInvalidNumberOfDataException("El número de datos para PERSONA es menor de 8");
 		}
 	}
-	private void comprobarDatosLocalizacion(String[] datos) throws EmsInvalidNumberOfDataException,
+	private void anadirDatosLocalizacion(String[] datos) throws EmsInvalidNumberOfDataException,
 			EmsDuplicateLocationException {
 		if (datos[0].equals("LOCALIZACION")) {
 			comprobarNumDatosLocalizacion(datos);
