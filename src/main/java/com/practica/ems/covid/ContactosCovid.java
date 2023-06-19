@@ -123,16 +123,8 @@ public class ContactosCovid {
 					if (!datos[0].equals("PERSONA") && !datos[0].equals("LOCALIZACION")) {
 						throw new EmsInvalidTypeException();
 					}
-					if (datos[0].equals("PERSONA")) {
-						comprobarDatosPersona(datos);
-						this.poblacion.addPersona(this.crearPersona(datos));
-					}
-					if (datos[0].equals("LOCALIZACION")) {
-						comprobarDatosLocalizacion(datos);
-						PosicionPersona pp = this.crearPosicionPersona(datos);
-						this.localizacion.addLocalizacion(pp);
-						this.listaContactos.insertarNodoTemporal(pp);
-					}
+					comprobarDatosPersona(datos);
+					comprobarNumDatosLocalizacion(datos);
 				}
 
 			}
@@ -152,12 +144,28 @@ public class ContactosCovid {
 			}
 		}
 	}
-	private void comprobarDatosPersona(String[] datos) throws EmsInvalidNumberOfDataException {
+	private void comprobarDatosPersona(String[] datos) throws EmsInvalidNumberOfDataException,
+			EmsDuplicatePersonException {
+		if (datos[0].equals("PERSONA")) {
+			comprobarNumDatosPersona(datos);
+			this.poblacion.addPersona(this.crearPersona(datos));
+		}
+	}
+	private void comprobarNumDatosPersona(String[] datos) throws EmsInvalidNumberOfDataException {
 		if (datos.length != Constantes.MAX_DATOS_PERSONA) {
 			throw new EmsInvalidNumberOfDataException("El número de datos para PERSONA es menor de 8");
 		}
 	}
-	private void comprobarDatosLocalizacion(String[] datos) throws EmsInvalidNumberOfDataException {
+	private void comprobarDatosLocalizacion(String[] datos) throws EmsInvalidNumberOfDataException,
+			EmsDuplicateLocationException {
+		if (datos[0].equals("LOCALIZACION")) {
+			comprobarNumDatosLocalizacion(datos);
+			PosicionPersona pp = this.crearPosicionPersona(datos);
+			this.localizacion.addLocalizacion(pp);
+			this.listaContactos.insertarNodoTemporal(pp);
+		}
+	}
+	private void comprobarNumDatosLocalizacion(String[] datos) throws EmsInvalidNumberOfDataException {
 		if (datos.length != Constantes.MAX_DATOS_LOCALIZACION) {
 			throw new EmsInvalidNumberOfDataException(
 					"El número de datos para LOCALIZACION es menor de 6" );
